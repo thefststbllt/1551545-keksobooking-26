@@ -1,43 +1,41 @@
 // Example of the function below was gently peeked from https://learn.javascript.ru/task/random-int-min-max
 
-function randomInteger(min, max) {
+function getRandomInteger(min, max) {
   if (min >= 0 && max >= 0) {
     if (min > max) {
-      console.log('Неправильно задан диапазон значений, попробуйте поменять значения местами');
       return undefined;
     }
     if (min === max) {
-      console.log('Граничные значения равны друг другу');
+      return min;
     }
-    let rand = min + Math.random() * (max + 1 - min);
+    const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
-  console.log('Ошибка! Числа из диапазона должны быть положительными, включая 0');
+  return undefined;
 }
 
-let result = randomInteger(5, 200);
-console.log(result);
+getRandomInteger(5, 200);
 
 /* Example of the function below was gently peeked from https://learn.javascript.ru/task/random-min-max &
  https://javascript.ru/forum/misc/2860-okruglenie-do-nuzhnogo-kolichestva-znakov-posle-zapyatojj.html
 */
 
-function randomFlops(min, max, symbols) {
+function getRandomFlops(min, max, symbols) {
   if (min >= 0 && max >= 0) {
     if (min > max) {
-      console.log('Неправильно задан диапазон значений, попробуйте поменять значения местами');
       return undefined;
     }
     if (min === max) {
-      console.log('Граничные значения равны друг другу');
+      return min;
     }
-    let randomNumber = min + Math.random() * (max - min);
-    if (isNaN(randomNumber) || isNaN(symbols)) return false;
-    let m = Math.pow(10, symbols);
+    const randomNumber = min + Math.random() * (max - min);
+    if (isNaN(randomNumber) || isNaN(symbols)) {
+      return false;
+    }
+    const m = Math.pow(10, symbols);
     return Math.round(randomNumber*m)/m;
   }
-  console.log('Ошибка! Числа из диапазона должны быть положительными, включая 0');
+  return undefined;
 }
 
-let resultRandomFlops = randomFlops(0, 1, 1);
-console.log(resultRandomFlops);
+getRandomFlops(0, 1, 1);
