@@ -23,8 +23,8 @@ const getArray = () => {
 };
 
 const getAvatarArrayElements = () => {
-  const orderNumber = (`0${  generatedValues.shift()}`).slice(-2);
-  return `img/avatars/user${  String(orderNumber)  }.png`;
+  const orderNumber = (`0${generatedValues.shift()}`).slice(-2);
+  return `img/avatars/user${String(orderNumber)}.png`;
 };
 
 const createAdvert = () => ({
@@ -50,6 +50,6 @@ const createAdvert = () => ({
 
 //Array generating
 getArray();
-const advertList = Array.from({length: SIMILAR_ADVERT_COUNT}, createAdvert);
+const advertList = (count) => Array.from({length: count}, createAdvert);
 
 export {advertList};
