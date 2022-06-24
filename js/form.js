@@ -1,6 +1,6 @@
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
-const formSlider = adForm.querySelector('.ad-form__slider')
+const formSlider = adForm.querySelector('.ad-form__slider');
 
 const inactiveForm = () => {
   adForm.classList.add('ad-form--disabled');
@@ -12,7 +12,7 @@ const inactiveForm = () => {
     mapFilters.children.item(i).disabled = true;
   }
   formSlider.disabled = true;
-}
+};
 
 const activeForm = () => {
   adForm.classList.remove('ad-form--disabled');
@@ -24,6 +24,6 @@ const activeForm = () => {
     mapFilters.children.item(i).disabled = false;
   }
   formSlider.disabled = false;
-}
+};
 
 activeForm();
