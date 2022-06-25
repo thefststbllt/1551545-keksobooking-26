@@ -2,7 +2,7 @@ const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const formSlider = adForm.querySelector('.ad-form__slider');
 
-const inactiveForm = () => {
+const switchOffForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
   for (let i = 0; i < adForm.children.length; i++) {
@@ -14,7 +14,7 @@ const inactiveForm = () => {
   formSlider.disabled = true;
 };
 
-const activeForm = () => {
+const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
   for (let i = 0; i < adForm.children.length; i++) {
@@ -26,4 +26,4 @@ const activeForm = () => {
   formSlider.disabled = false;
 };
 
-activeForm();
+switchOnForm();
