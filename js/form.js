@@ -1,6 +1,23 @@
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const formSlider = adForm.querySelector('.ad-form__slider');
+const roomNumber = document.querySelector('#room_number');
+const capacityNumber = document.querySelector('#capacity');
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextClass: 'ad-form__error-text',
+});
+
+const guestsLimit = {
+  '1': [1],
+  '2': [1, 2],
+  '3': [1, 2, 3],
+  '100': [0],
+};
+
+const priceFieldTemporary = adForm.querySelector('#address');
+priceFieldTemporary.value = '35.7, 139.8';
 
 const switchOffForm = () => {
   adForm.classList.add('ad-form--disabled');
@@ -13,6 +30,8 @@ const switchOffForm = () => {
   }
   formSlider.disabled = true;
 };
+
+switchOffForm(window.load);
 
 const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
@@ -27,3 +46,28 @@ const switchOnForm = () => {
 };
 
 switchOnForm();
+
+const validateCapacity = (value) => {
+  const availableNumberOfGuests = guestsLimit[roomNumber.value];
+  value = Number(value);
+  return availableNumberOfGuests.includes(value);
+};
+
+const getCapacityErrorMessage = () => {
+  const availableNumberOfGuests = guestsLimit[roomNumber.value];
+  if (availableNumberOfGuests.includes(0)) {
+    return 'Не предназначено для гостей!';
+  }
+  const maxGuestsAmount = Math.max.apply(Math, availableNumberOfGuests);
+  return `Не более ${maxGuestsAmount} на это количество комнат!`;
+};
+
+pristine.addValidator(capacityNumber, validateCapacity, getCapacityErrorMessage);
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    adForm.submit();
+  }
+});
