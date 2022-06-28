@@ -31,6 +31,8 @@ const switchOffForm = () => {
   formSlider.disabled = true;
 };
 
+switchOffForm(window.load);
+
 const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
