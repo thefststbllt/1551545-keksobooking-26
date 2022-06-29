@@ -16,6 +16,13 @@ const guestsLimit = {
   '100': [0],
 };
 
+const INPUT_NUMBERS = {
+  ZERO: 0,
+  THREE_THOUSAND: 3000,
+  FIVE_THOUSAND: 5000,
+  TEN_THOUSAND: 10000,
+};
+
 const addressFieldTemporary = adForm.querySelector('#address');
 const typeAccommodation = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
@@ -27,24 +34,24 @@ priceField.min = 5000;
 typeAccommodation.addEventListener('change', () => {
   switch (typeAccommodation.value) {
     case 'bungalow':
-      priceField.placeholder = 0;
-      priceField.min = 0;
+      priceField.placeholder = INPUT_NUMBERS.ZERO;
+      priceField.min = INPUT_NUMBERS.ZERO;
       break;
     case 'flat':
-      priceField.placeholder = 5000;
-      priceField.min = 5000;
+      priceField.placeholder = INPUT_NUMBERS.FIVE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
       break;
     case 'hotel':
-      priceField.placeholder = 3000;
-      priceField.min = 3000;
+      priceField.placeholder = INPUT_NUMBERS.THREE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.THREE_THOUSAND;
       break;
     case 'house':
-      priceField.placeholder = 5000;
-      priceField.min = 5000;
+      priceField.placeholder = INPUT_NUMBERS.FIVE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
       break;
     case 'palace':
-      priceField.placeholder = 10000;
-      priceField.min = 10000;
+      priceField.placeholder = INPUT_NUMBERS.TEN_THOUSAND;
+      priceField.min = INPUT_NUMBERS.TEN_THOUSAND;
   }
 });
 
@@ -122,29 +129,9 @@ adForm.addEventListener('submit', (evt) => {
 
 //Timein/Timeout synchronization
 timeinField.addEventListener('change', () => {
-  switch (timeinField.value) {
-    case '12:00':
-      timeoutField.value = timeinField.value;
-      break;
-    case '13:00':
-      timeoutField.value = timeinField.value;
-      break;
-    case '14:00':
-      timeoutField.value = timeinField.value;
-      break;
-  }
+  timeoutField.selectedIndex = timeinField.selectedIndex;
 });
 
 timeoutField.addEventListener('change', () => {
-  switch (timeoutField.value) {
-    case '12:00':
-      timeinField.value = timeoutField.value;
-      break;
-    case '13:00':
-      timeinField.value = timeoutField.value;
-      break;
-    case '14:00':
-      timeinField.value = timeoutField.value;
-      break;
-  }
+  timeinField.selectedIndex = timeoutField.selectedIndex;
 });
