@@ -1,8 +1,8 @@
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const formSlider = adForm.querySelector('.ad-form__slider');
-const roomNumber = document.querySelector('#room_number');
-const capacityNumber = document.querySelector('#capacity');
+const roomNumber = adForm.querySelector('#room_number');
+const capacityNumber = adForm.querySelector('#capacity');
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
@@ -16,9 +16,46 @@ const guestsLimit = {
   '100': [0],
 };
 
-const priceFieldTemporary = adForm.querySelector('#address');
-priceFieldTemporary.value = '35.7, 139.8';
+const INPUT_NUMBERS = {
+  ZERO: 0,
+  THREE_THOUSAND: 3000,
+  FIVE_THOUSAND: 5000,
+  TEN_THOUSAND: 10000,
+};
 
+const addressFieldTemporary = adForm.querySelector('#address');
+const typeAccommodation = adForm.querySelector('#type');
+const priceField = adForm.querySelector('#price');
+const timeinField = adForm.querySelector('#timein');
+const timeoutField = adForm.querySelector('#timeout');
+addressFieldTemporary.value = '35.7, 139.8';
+priceField.min = 5000;
+
+typeAccommodation.addEventListener('change', () => {
+  switch (typeAccommodation.value) {
+    case 'bungalow':
+      priceField.placeholder = INPUT_NUMBERS.ZERO;
+      priceField.min = INPUT_NUMBERS.ZERO;
+      break;
+    case 'flat':
+      priceField.placeholder = INPUT_NUMBERS.FIVE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
+      break;
+    case 'hotel':
+      priceField.placeholder = INPUT_NUMBERS.THREE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.THREE_THOUSAND;
+      break;
+    case 'house':
+      priceField.placeholder = INPUT_NUMBERS.FIVE_THOUSAND;
+      priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
+      break;
+    case 'palace':
+      priceField.placeholder = INPUT_NUMBERS.TEN_THOUSAND;
+      priceField.min = INPUT_NUMBERS.TEN_THOUSAND;
+  }
+});
+
+//Form activation
 const switchOffForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
@@ -47,6 +84,7 @@ const switchOnForm = () => {
 
 switchOnForm();
 
+//Validation of folks capacity
 const validateCapacity = (value) => {
   const availableNumberOfGuests = guestsLimit[roomNumber.value];
   value = Number(value);
@@ -64,10 +102,36 @@ const getCapacityErrorMessage = () => {
 
 pristine.addValidator(capacityNumber, validateCapacity, getCapacityErrorMessage);
 
+
+//Price validation
+const validatePrice = (value) => {
+  const priceFieldInner = adForm.querySelector('#price');
+  value = Number(value);
+  return value > priceFieldInner.min;
+};
+
+const getPriceErrorMessage = () => {
+  const priceFieldInner = adForm.querySelector('#price');
+  if (priceFieldInner.value < priceFieldInner.min) {
+    return `Минимальная цена ${priceFieldInner.min}`;
+  }
+};
+
+pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
     adForm.submit();
   }
+});
+
+//Timein/Timeout synchronization
+timeinField.addEventListener('change', () => {
+  timeoutField.selectedIndex = timeinField.selectedIndex;
+});
+
+timeoutField.addEventListener('change', () => {
+  timeinField.selectedIndex = timeoutField.selectedIndex;
 });
