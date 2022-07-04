@@ -1,11 +1,9 @@
 import {advertList} from './data.js';
 
-const similarListOffers = document.querySelector('#map-canvas');
-const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
-const similarAdverts = advertList(1);
+const similarAdverts = advertList(10);
 
-
-similarAdverts.forEach((offer) => {
+const createCustomPopup = (offer) => {
+  const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offerElement = similarOfferTemplate.cloneNode(true);
   const featureList = offerElement.querySelectorAll('.popup__feature');
   const modifiers = offer.offer.features.map((featureCurrent) => `popup__feature--${featureCurrent}`);
@@ -90,5 +88,8 @@ similarAdverts.forEach((offer) => {
     offerElement.querySelector('.popup__avatar').classList.add('hidden');
   }
   offerElement.querySelector('.popup__avatar').src = offer.author.avatar;
-  similarListOffers.appendChild(offerElement);
-});
+  return offerElement;
+};
+
+export {similarAdverts};
+export {createCustomPopup};
