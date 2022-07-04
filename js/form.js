@@ -31,7 +31,7 @@ const CITY_CENTER = {
 
 const getAdrressValues = () => {
   const locValues = (Object.values(CITY_CENTER));
-  return locValues.map(element => element.toFixed(5));
+  return locValues.map((element) => element.toFixed(5));
 };
 
 const addressFieldTemporary = adForm.querySelector('#address');
