@@ -2,15 +2,13 @@ import {switchOnForm} from './form.js';
 import {addressFieldTemporary} from './form.js';
 import {similarAdverts} from './elements.js';
 import {createCustomPopup} from './elements.js';
+import {CITY_CENTER} from './form.js';
 
 const map = L.map('map-canvas')
   .on('load', () => {
     switchOnForm();
   })
-  .setView({
-    lat: 35.67500,
-    lng: 139.75000,
-  }, 12);
+  .setView(CITY_CENTER, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -26,10 +24,7 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  {
-    lat: 35.67500,
-    lng: 139.75000,
-  },
+  CITY_CENTER,
   {
     draggable: true,
     icon: mainPinIcon,

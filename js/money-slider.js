@@ -1,16 +1,18 @@
+import {INPUT_NUMBERS} from './form.js';
+
 const moneySlider = document.querySelector('.ad-form__slider');
 const moneyField = document.querySelector('#price');
 const livingType = document.querySelector('#type');
 
-moneyField.value = 5000;
+moneyField.value = INPUT_NUMBERS.FIVE_THOUSAND;
 
 noUiSlider.create(moneySlider, {
   range: {
-    min: 0,
-    '50%': 10000,
-    max: 100000,
+    min: INPUT_NUMBERS.ZERO,
+    '50%': INPUT_NUMBERS.TEN_THOUSAND,
+    max: INPUT_NUMBERS.HUNDRED_K,
   },
-  start: 5000,
+  start: INPUT_NUMBERS.FIVE_THOUSAND,
   step: 1,
   connect: 'lower',
   format: {
@@ -37,15 +39,15 @@ livingType.addEventListener('change', () => {
       moneySlider.noUiSlider.set(0);
       break;
     case 'flat':
-      moneySlider.noUiSlider.set(5000);
+      moneySlider.noUiSlider.set(INPUT_NUMBERS.FIVE_THOUSAND);
       break;
     case 'hotel':
-      moneySlider.noUiSlider.set(3000);
+      moneySlider.noUiSlider.set(INPUT_NUMBERS.THREE_THOUSAND);
       break;
     case 'house':
-      moneySlider.noUiSlider.set(5000);
+      moneySlider.noUiSlider.set(INPUT_NUMBERS.FIVE_THOUSAND);
       break;
     case 'palace':
-      moneySlider.noUiSlider.set(10000);
+      moneySlider.noUiSlider.set(INPUT_NUMBERS.TEN_THOUSAND);
   }
 });
