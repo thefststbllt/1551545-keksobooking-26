@@ -21,6 +21,17 @@ const INPUT_NUMBERS = {
   THREE_THOUSAND: 3000,
   FIVE_THOUSAND: 5000,
   TEN_THOUSAND: 10000,
+  HUNDRED_K: 100000,
+};
+
+const CITY_CENTER = {
+  lat: 35.67500,
+  lng: 139.75000,
+};
+
+const getAdrressValues = () => {
+  const locValues = (Object.values(CITY_CENTER));
+  return locValues.map((element) => element.toFixed(5));
 };
 
 const addressFieldTemporary = adForm.querySelector('#address');
@@ -28,7 +39,7 @@ const typeAccommodation = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
 const timeinField = adForm.querySelector('#timein');
 const timeoutField = adForm.querySelector('#timeout');
-addressFieldTemporary.value = '35.7, 139.8';
+addressFieldTemporary.value = getAdrressValues().join();
 priceField.min = 5000;
 
 typeAccommodation.addEventListener('change', () => {
@@ -68,7 +79,8 @@ const switchOffForm = () => {
   formSlider.disabled = true;
 };
 
-switchOffForm(window.load);
+//Disabling form as default
+switchOffForm();
 
 const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
@@ -81,8 +93,6 @@ const switchOnForm = () => {
   }
   formSlider.disabled = false;
 };
-
-switchOnForm();
 
 //Validation of folks capacity
 const validateCapacity = (value) => {
@@ -112,7 +122,7 @@ const validatePrice = (value) => {
 
 const getPriceErrorMessage = () => {
   const priceFieldInner = adForm.querySelector('#price');
-  if (priceFieldInner.value < priceFieldInner.min) {
+  if (priceFieldInner.value < Math.abs(priceFieldInner.min)) {
     return `Минимальная цена ${priceFieldInner.min}`;
   }
 };
@@ -135,3 +145,8 @@ timeinField.addEventListener('change', () => {
 timeoutField.addEventListener('change', () => {
   timeinField.selectedIndex = timeoutField.selectedIndex;
 });
+
+export {switchOnForm};
+export {addressFieldTemporary};
+export {CITY_CENTER};
+export {INPUT_NUMBERS};
