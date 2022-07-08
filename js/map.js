@@ -33,7 +33,7 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on('moveend', (evt) => {
+mainPinMarker.on('move', (evt) => {
   const newMarkValues = [];
   const markValues = Object.values(evt.target.getLatLng());
   markValues.map((element) => {
