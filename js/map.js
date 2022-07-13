@@ -1,6 +1,5 @@
 import {switchOnForm} from './form.js';
 import {addressFieldTemporary} from './form.js';
-import {similarAdverts} from './elements.js';
 import {createCustomPopup} from './elements.js';
 import {CITY_CENTER} from './form.js';
 
@@ -33,7 +32,7 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on('moveend', (evt) => {
+mainPinMarker.on('move', (evt) => {
   const newMarkValues = [];
   const markValues = Object.values(evt.target.getLatLng());
   markValues.map((element) => {
@@ -66,6 +65,11 @@ const createMarker = (offer) => {
     .bindPopup(createCustomPopup(offer));
 };
 
-similarAdverts.forEach((offer) => {
-  createMarker(offer);
-});
+const createSimilarList = (serverObjects) => {
+  serverObjects.forEach((offer) => {
+    createMarker(offer);
+  });
+};
+
+export {createSimilarList, mainPinMarker};
+

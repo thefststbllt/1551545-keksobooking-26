@@ -1,12 +1,7 @@
-import {advertList} from './data.js';
-
-const similarAdverts = advertList(10);
-
 const createCustomPopup = (offer) => {
   const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offerElement = similarOfferTemplate.cloneNode(true);
   const featureList = offerElement.querySelectorAll('.popup__feature');
-  const modifiers = offer.offer.features.map((featureCurrent) => `popup__feature--${featureCurrent}`);
   const photoList = offerElement.querySelector('.popup__photos');
   //title
   if (offer.offer.title === undefined) {
@@ -58,15 +53,17 @@ const createCustomPopup = (offer) => {
   }
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
   //features
-  if (offer.offer.features.length === 0) {
+  if (offer.offer.features === undefined) {
     offerElement.querySelector('.popup__features').classList.add('hidden');
+  } else {
+    featureList.forEach((featureListItem) => {
+      const modifiers = offer.offer.features.map((featureCurrent) => `popup__feature--${featureCurrent}`);
+      const modifier = featureListItem.classList[1];
+      if (!modifiers.includes(modifier)) {
+        featureListItem.remove();
+      }
+    });
   }
-  featureList.forEach((featureListItem) => {
-    const modifier = featureListItem.classList[1];
-    if (!modifiers.includes(modifier)) {
-      featureListItem.remove();
-    }
-  });
   //description
   if (offer.offer.description === '') {
     offerElement.querySelector('.popup__description').classList.add('hidden');
@@ -88,8 +85,8 @@ const createCustomPopup = (offer) => {
     offerElement.querySelector('.popup__avatar').classList.add('hidden');
   }
   offerElement.querySelector('.popup__avatar').src = offer.author.avatar;
+
   return offerElement;
 };
 
-export {similarAdverts};
 export {createCustomPopup};

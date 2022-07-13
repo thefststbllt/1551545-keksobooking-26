@@ -49,7 +49,5 @@ const createAdvert = () => ({
 });
 
 //Array generating
+createAdvert();
 getArray();
-const advertList = (count) => Array.from({length: count}, createAdvert);
-
-export {advertList};
