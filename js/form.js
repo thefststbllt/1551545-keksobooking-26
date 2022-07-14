@@ -165,24 +165,8 @@ timeoutField.addEventListener('change', () => {
   timeinField.selectedIndex = timeoutField.selectedIndex;
 });
 
-//Resetting form
 
-
-const resetForm = () => {
-  adForm.querySelector('#title').value = '';
-  addressFieldTemporary.value = getAdrressValues();
-  typeAccommodation.value = 'flat';
-  priceField.value = INPUT_NUMBERS.FIVE_THOUSAND;
-  timeinField.value = timeoutField.value = '12:00';
-  roomNumber.value = 1;
-  capacityNumber.value = 3;
-  const checkboxes = adForm.querySelectorAll('.features__checkbox');
-  for (const checkbox of checkboxes) {
-    checkbox.checked = false;
-  }
-};
-
-export {activateForm, switchOnForm, setUserFormSubmit, resetForm};
+export {activateForm, switchOnForm, setUserFormSubmit, getAdrressValues};
 export {addressFieldTemporary};
 export {CITY_CENTER};
 export {INPUT_NUMBERS};

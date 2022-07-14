@@ -1,13 +1,10 @@
-import {resetForm} from './form.js';
-
 const mainBody = document.querySelector('body');
 
-const getErrorMessage = (message) => {
-  const errorMessage = document.createElement('div');
-  errorMessage.innerHTML = `${message} - Что-то пошло не так...`;
-  errorMessage.style.cssText = 'color: tomato';
-  const errorMap = document.querySelector('.map');
-  errorMap.append(errorMessage);
+const getErrorMessage = () => {
+  const errorMessage = document.querySelector('#error').content.querySelector('.error');
+  const errorElement = errorMessage.cloneNode(true);
+  errorElement.innerHTML = '<p class="error__message">Сервер не отвечает...</p>';
+  mainBody.append(errorElement);
 };
 
 const getLuckSendMessage = () => {
@@ -16,12 +13,10 @@ const getLuckSendMessage = () => {
   mainBody.append(luckSendElement);
   mainBody.addEventListener('click', () => {
     mainBody.removeChild(luckSendElement);
-    resetForm();
   });
   mainBody.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
+    if (evt.key === 'Escape') {
       mainBody.removeChild(luckSendElement);
-      resetForm();
     }
   });
 };
@@ -34,7 +29,7 @@ const getFailSendMessage = () => {
     mainBody.removeChild(failSendElement);
   });
   mainBody.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
+    if (evt.key === 'Escape') {
       mainBody.removeChild(failSendElement);
     }
   });
