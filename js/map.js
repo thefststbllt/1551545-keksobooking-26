@@ -1,8 +1,8 @@
 import {switchOnForm} from './form.js';
 import {addressFieldTemporary} from './form.js';
-import {similarAdverts} from './elements.js';
 import {createCustomPopup} from './elements.js';
 import {CITY_CENTER} from './form.js';
+import {getAdrressValues} from './form.js';
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -33,7 +33,7 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on('moveend', (evt) => {
+mainPinMarker.on('move', (evt) => {
   const newMarkValues = [];
   const markValues = Object.values(evt.target.getLatLng());
   markValues.map((element) => {
@@ -66,6 +66,23 @@ const createMarker = (offer) => {
     .bindPopup(createCustomPopup(offer));
 };
 
-similarAdverts.forEach((offer) => {
-  createMarker(offer);
-});
+const createSimilarList = (serverObjects) => {
+  serverObjects.forEach((offer) => {
+    createMarker(offer);
+  });
+};
+
+const resetMap = (x = CITY_CENTER.lat, y = CITY_CENTER.lng) => {
+  map.setView({
+    lat: x,
+    lng: y,
+  }, 12);
+
+  mainPinMarker.setLatLng(CITY_CENTER);
+  addressFieldTemporary.value = getAdrressValues().join();
+  map.closePopup();
+};
+
+export {createSimilarList, mainPinMarker, resetMap};
+
+

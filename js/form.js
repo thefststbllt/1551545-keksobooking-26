@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+import {getLuckSendMessage, getFailSendMessage} from './messages.js';
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const formSlider = adForm.querySelector('.ad-form__slider');
@@ -25,8 +28,8 @@ const INPUT_NUMBERS = {
 };
 
 const CITY_CENTER = {
-  lat: 35.67500,
-  lng: 139.75000,
+  lat: 35.675,
+  lng: 139.75,
 };
 
 const getAdrressValues = () => {
@@ -40,7 +43,7 @@ const priceField = adForm.querySelector('#price');
 const timeinField = adForm.querySelector('#timein');
 const timeoutField = adForm.querySelector('#timeout');
 addressFieldTemporary.value = getAdrressValues().join();
-priceField.min = 5000;
+priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
 
 typeAccommodation.addEventListener('change', () => {
   switch (typeAccommodation.value) {
@@ -79,9 +82,6 @@ const switchOffForm = () => {
   formSlider.disabled = true;
 };
 
-//Disabling form as default
-switchOffForm();
-
 const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
@@ -92,6 +92,14 @@ const switchOnForm = () => {
     mapFilters.children.item(i).disabled = false;
   }
   formSlider.disabled = false;
+};
+
+const activateForm = (isEnable) => {
+  if (isEnable) {
+    switchOnForm();
+  } else {
+    switchOffForm();
+  }
 };
 
 //Validation of folks capacity
@@ -117,7 +125,7 @@ pristine.addValidator(capacityNumber, validateCapacity, getCapacityErrorMessage)
 const validatePrice = (value) => {
   const priceFieldInner = adForm.querySelector('#price');
   value = Number(value);
-  return value > priceFieldInner.min;
+  return value >= priceFieldInner.min;
 };
 
 const getPriceErrorMessage = () => {
@@ -129,13 +137,24 @@ const getPriceErrorMessage = () => {
 
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    adForm.submit();
-  }
-});
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      sendData(
+        () => {
+          getLuckSendMessage();
+        },
+        () => {
+          getFailSendMessage();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
 //Timein/Timeout synchronization
 timeinField.addEventListener('change', () => {
@@ -146,7 +165,8 @@ timeoutField.addEventListener('change', () => {
   timeinField.selectedIndex = timeoutField.selectedIndex;
 });
 
-export {switchOnForm};
+
+export {activateForm, switchOnForm, setUserFormSubmit, getAdrressValues};
 export {addressFieldTemporary};
 export {CITY_CENTER};
 export {INPUT_NUMBERS};
