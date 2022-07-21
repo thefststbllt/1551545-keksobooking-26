@@ -30,5 +30,16 @@ const getRandomFlops = (min, max, symbols) => {
   return undefined;
 };
 
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {getRandomInteger};
 export {getRandomFlops};
+export {debounce};

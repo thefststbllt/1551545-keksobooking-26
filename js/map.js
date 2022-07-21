@@ -4,11 +4,12 @@ import {createCustomPopup} from './elements.js';
 import {CITY_CENTER} from './form.js';
 import {getAdrressValues} from './form.js';
 
+const MARKERS_LIMIT = 10;
 const map = L.map('map-canvas')
   .on('load', () => {
     switchOnForm();
   })
-  .setView(CITY_CENTER, 12);
+  .setView(CITY_CENTER, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -50,6 +51,8 @@ const icon = L.icon({
 
 const markerGroup = L.layerGroup().addTo(map);
 
+const pinsCount = [];
+
 const createMarker = (offer) => {
   const {lat, lng} = offer.location;
   const marker = L.marker(
@@ -64,11 +67,19 @@ const createMarker = (offer) => {
   marker
     .addTo(markerGroup)
     .bindPopup(createCustomPopup(offer));
+
+  pinsCount.push(marker);
 };
 
-const createSimilarList = (serverObjects) => {
-  serverObjects.forEach((offer) => {
+const createSimilarList = (serverObjects) => serverObjects.slice(0, MARKERS_LIMIT)
+  .forEach((offer) => {
     createMarker(offer);
+  });
+
+//Removing func
+const removeSimilarList = () => {
+  pinsCount.forEach((pin) => {
+    pin.remove();
   });
 };
 
@@ -76,13 +87,14 @@ const resetMap = (x = CITY_CENTER.lat, y = CITY_CENTER.lng) => {
   map.setView({
     lat: x,
     lng: y,
-  }, 12);
+  }, 13);
 
   mainPinMarker.setLatLng(CITY_CENTER);
   addressFieldTemporary.value = getAdrressValues().join();
   map.closePopup();
 };
 
-export {createSimilarList, mainPinMarker, resetMap};
+
+export {createSimilarList, mainPinMarker, resetMap, MARKERS_LIMIT, removeSimilarList};
 
 

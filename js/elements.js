@@ -70,16 +70,16 @@ const createCustomPopup = (offer) => {
   }
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
   //photos
-  if (offer.offer.photos.length === 0) {
+  if (offer.offer.photos === undefined) {
     offerElement.querySelector('.popup__photos').classList.add('hidden');
-  }
-  for (let i = 1; i < offer.offer.photos.length; i++) {
-    const photoItem = offerElement.querySelector('.popup__photo');
-    photoList.appendChild(photoItem.cloneNode(true));
-  }
-  for (let i = 0; i < offer.offer.photos.length; i++) {
-    photoList.children[i].src = offer.offer.photos[i];
-  }
+  } else {
+    for (let i = 1; i < offer.offer.photos.length; i++) {
+      const photoItem = offerElement.querySelector('.popup__photo');
+      photoList.appendChild(photoItem.cloneNode(true));
+    }
+    for (let i = 0; i < offer.offer.photos.length; i++) {
+      photoList.children[i].src = offer.offer.photos[i];
+    }}
   //avatar
   if (offer.author.avatar === undefined) {
     offerElement.querySelector('.popup__avatar').classList.add('hidden');
