@@ -1,3 +1,10 @@
+const HOUSING_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+};
+
 const createCustomPopup = (offer) => {
   const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offerElement = similarOfferTemplate.cloneNode(true);
@@ -22,26 +29,8 @@ const createCustomPopup = (offer) => {
   if (offer.offer.type === undefined) {
     offerElement.querySelector('.popup__type').classList.add('hidden');
   } else {
-    for (let i = 0; i < offer.offer.type.length - 1; i++) {
-      switch (offer.offer.type) {
-        case 'palace':
-          offer.offer.type = 'Дворец';
-          break;
-        case 'flat':
-          offer.offer.type = 'Квартира';
-          break;
-        case 'house':
-          offer.offer.type = 'Дом';
-          break;
-        case 'bungalow':
-          offer.offer.type = 'Бунгало';
-          break;
-        case 'hotel':
-          offer.offer.type = 'Отель';
-      }
-    }
+    offerElement.querySelector('.popup__type').textContent = HOUSING_TYPES[offer.offer.type];
   }
-  offerElement.querySelector('.popup__type').textContent = offer.offer.type;
   //room capacity
   if (offer.offer.rooms === undefined || offer.offer.guests === undefined) {
     offerElement.querySelector('.popup__text--capacity').classList.add('hidden');
@@ -70,16 +59,16 @@ const createCustomPopup = (offer) => {
   }
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
   //photos
-  if (offer.offer.photos.length === 0) {
+  if (offer.offer.photos === undefined) {
     offerElement.querySelector('.popup__photos').classList.add('hidden');
-  }
-  for (let i = 1; i < offer.offer.photos.length; i++) {
-    const photoItem = offerElement.querySelector('.popup__photo');
-    photoList.appendChild(photoItem.cloneNode(true));
-  }
-  for (let i = 0; i < offer.offer.photos.length; i++) {
-    photoList.children[i].src = offer.offer.photos[i];
-  }
+  } else {
+    for (let i = 1; i < offer.offer.photos.length; i++) {
+      const photoItem = offerElement.querySelector('.popup__photo');
+      photoList.appendChild(photoItem.cloneNode(true));
+    }
+    for (let i = 0; i < offer.offer.photos.length; i++) {
+      photoList.children[i].src = offer.offer.photos[i];
+    }}
   //avatar
   if (offer.author.avatar === undefined) {
     offerElement.querySelector('.popup__avatar').classList.add('hidden');
