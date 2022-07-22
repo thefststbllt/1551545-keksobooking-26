@@ -10,9 +10,7 @@ adAvatarUpload.addEventListener('change', () => {
   const file = adAvatarUpload.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => {
-    return fileName.endsWith(it);
-  });
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     adAvatarPreview.src = URL.createObjectURL(file);
@@ -23,9 +21,7 @@ adHouseUpload.addEventListener('change', () => {
   const file = adHouseUpload.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => {
-    return fileName.endsWith(it);
-  });
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     const innerPicture = document.createElement('img');
