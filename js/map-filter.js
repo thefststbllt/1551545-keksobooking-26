@@ -1,5 +1,5 @@
+import {createSimilarList, MARKERS_LIMIT, removeMarkers} from './map.js';
 import {debounce} from './util.js';
-import {createSimilarList, MARKERS_LIMIT, removeSimilarList} from './map.js';
 
 const mapFilters = document.querySelector('.map__filters');
 const housingType = document.querySelector('#housing-type');
@@ -7,6 +7,7 @@ const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
 
+const ANY = 'any';
 const PRICE_RANGE = {
   ANY: {
     min: 0,
@@ -26,10 +27,10 @@ const PRICE_RANGE = {
   },
 };
 
-const getSimilarType = (offer) => {
-  return housingType.value === 'any' || housingType.value === offer.offer.type;
-};
+//Getting suited type
+const getSimilarType = (offer) => housingType.value === ANY || housingType.value === offer.offer.type;
 
+//Getting suited price
 const getSimilarPrice = (offer) => {
   const minPrice = (PRICE_RANGE[housingPrice.value.toUpperCase()].min);
   const maxPrice = (PRICE_RANGE[housingPrice.value.toUpperCase()].max);
@@ -37,39 +38,41 @@ const getSimilarPrice = (offer) => {
   return offer.offer.price >= minPrice && offer.offer.price < maxPrice;
 };
 
-const getSimilarRoomsAmount = (offer) => {
-  return housingRooms.value === 'any' || +housingRooms.value === offer.offer.rooms;
+//Getting suited rooms amount
+const getSimilarRoomsAmount = (offer) => housingRooms.value === ANY || Number(housingRooms.value) === offer.offer.rooms;
+
+//Getting suited guests amount
+const getSimilarGuestsAmount = (offer) => housingGuests.value === ANY || Number(housingGuests.value) >= offer.offer.guests;
+
+//Getting suited features
+const getCheckedFeatures = () => Array.from(document.querySelectorAll('.map__checkbox:checked'), ({value}) => value);
+
+const getSimilarFeatures = (offer) => {
+  const checkedFeatures = getCheckedFeatures();
+  if (offer.offer.features) {
+    return checkedFeatures.every((feature) => offer.offer.features.includes(feature));
+  }
+  return false;
 };
 
-const getSimilarGuestsAmount = (offer) => {
-  return housingGuests.value === 'any' || +housingGuests.value >= offer.offer.guests;
-};
-
-const getSimilarFeatures = (offer, checkedFeatures) => {
-  const offerFeatures = offer.offer.features;
-  return checkedFeatures.every(feature => offerFeatures?.includes(feature.value));
-};
-
-const defineSimilarOffer = (offer, checkedFeatures) => {
-  return getSimilarType(offer) && getSimilarPrice(offer) && getSimilarRoomsAmount(offer) && getSimilarGuestsAmount(offer) && getSimilarFeatures(offer, checkedFeatures);
-};
+//Defining suited offer withing array
+const defineSimilarOffer = (objects) => objects.filter((offer) => (getSimilarType(offer) && getSimilarPrice(offer) && getSimilarRoomsAmount(offer) && getSimilarGuestsAmount(offer) && getSimilarFeatures(offer)));
 
 const resetMapMarkers = (objects) => {
-  mapFilters.addEventListener('change', debounce(() => {
-    let filteredPins = [];
-    removeSimilarList();
-    const checkedUserFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
-    for (let i = 0; i < objects.length; i++) {
-      if (defineSimilarOffer(objects[i], checkedUserFeatures)) {
-        filteredPins.push(objects[i]);
-        if (filteredPins.length >= MARKERS_LIMIT) {
-          break;
-        }
+
+  mapFilters.addEventListener('change', () => {
+    removeMarkers();
+    const filteredArray = [];
+    for (const offer of defineSimilarOffer(objects)) {
+      if (filteredArray.length >= MARKERS_LIMIT) {
+        break;
+      }
+      if (defineSimilarOffer(objects)) {
+        filteredArray.push(offer);
       }
     }
-    console.log(filteredPins);
-    createSimilarList(filteredPins);
-  }));
+    debounce(() => createSimilarList(filteredArray))();
+  });
 };
 
 export {resetMapMarkers};

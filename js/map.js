@@ -1,15 +1,17 @@
 import {switchOnForm} from './form.js';
-import {addressFieldTemporary} from './form.js';
-import {createCustomPopup} from './elements.js';
-import {CITY_CENTER} from './form.js';
+import {createCustomPopup} from './custom-popup.js';
 import {getAdrressValues} from './form.js';
+import {addressFieldTemporary} from './form.js';
+import {CITY_CENTER} from './form.js';
 
 const MARKERS_LIMIT = 10;
+const ZOOM_NUMBER = 13;
+
 const map = L.map('map-canvas')
   .on('load', () => {
     switchOnForm();
   })
-  .setView(CITY_CENTER, 13);
+  .setView(CITY_CENTER, ZOOM_NUMBER);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -40,18 +42,16 @@ mainPinMarker.on('move', (evt) => {
   markValues.map((element) => {
     newMarkValues.push(element.toFixed(5));
   });
-  addressFieldTemporary.value = newMarkValues.join();
+  addressFieldTemporary.value = `Широта: ${newMarkValues.join(' Долгота: ')}`;
 });
 
-const icon = L.icon({
+const iconBasic = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const markerGroup = L.layerGroup().addTo(map);
-
-const pinsCount = [];
 
 const createMarker = (offer) => {
   const {lat, lng} = offer.location;
@@ -61,40 +61,34 @@ const createMarker = (offer) => {
       lng,
     },
     {
-      icon,
+      icon: iconBasic,
     },
   );
   marker
     .addTo(markerGroup)
     .bindPopup(createCustomPopup(offer));
-
-  pinsCount.push(marker);
 };
 
-const createSimilarList = (serverObjects) => serverObjects.slice(0, MARKERS_LIMIT)
-  .forEach((offer) => {
+const createSimilarList = (serverObjects) => {
+  const slicedArray = serverObjects.slice(0, MARKERS_LIMIT);
+  return slicedArray.forEach((offer) => {
     createMarker(offer);
   });
+};
 
-//Removing func
-const removeSimilarList = () => {
-  pinsCount.forEach((pin) => {
-    pin.remove();
-  });
+const removeMarkers = () => {
+  markerGroup.clearLayers();
 };
 
 const resetMap = (x = CITY_CENTER.lat, y = CITY_CENTER.lng) => {
   map.setView({
     lat: x,
     lng: y,
-  }, 13);
+  }, ZOOM_NUMBER);
 
   mainPinMarker.setLatLng(CITY_CENTER);
   addressFieldTemporary.value = getAdrressValues().join();
   map.closePopup();
 };
 
-
-export {createSimilarList, mainPinMarker, resetMap, MARKERS_LIMIT, removeSimilarList};
-
-
+export {createSimilarList, resetMap, removeMarkers, createMarker, mainPinMarker, MARKERS_LIMIT};

@@ -12,7 +12,7 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error-text',
 });
 
-const guestsLimit = {
+const GUESTS_LIMIT = {
   '1': [1],
   '2': [1, 2],
   '3': [1, 2, 3],
@@ -42,7 +42,7 @@ const typeAccommodation = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
 const timeinField = adForm.querySelector('#timein');
 const timeoutField = adForm.querySelector('#timeout');
-addressFieldTemporary.value = getAdrressValues().join();
+addressFieldTemporary.value = `Широта: ${getAdrressValues().join(' Долгота: ')}`;
 priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
 
 typeAccommodation.addEventListener('change', () => {
@@ -69,7 +69,7 @@ typeAccommodation.addEventListener('change', () => {
   }
 });
 
-//Form activation
+//Form deactivation
 const switchOffForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
@@ -82,6 +82,7 @@ const switchOffForm = () => {
   formSlider.disabled = true;
 };
 
+//Form activation
 const switchOnForm = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
@@ -104,13 +105,13 @@ const activateForm = (isEnable) => {
 
 //Validation of folks capacity
 const validateCapacity = (value) => {
-  const availableNumberOfGuests = guestsLimit[roomNumber.value];
+  const availableNumberOfGuests = GUESTS_LIMIT[roomNumber.value];
   value = Number(value);
   return availableNumberOfGuests.includes(value);
 };
 
 const getCapacityErrorMessage = () => {
-  const availableNumberOfGuests = guestsLimit[roomNumber.value];
+  const availableNumberOfGuests = GUESTS_LIMIT[roomNumber.value];
   if (availableNumberOfGuests.includes(0)) {
     return 'Не предназначено для гостей!';
   }
@@ -165,8 +166,4 @@ timeoutField.addEventListener('change', () => {
   timeinField.selectedIndex = timeoutField.selectedIndex;
 });
 
-
-export {activateForm, switchOnForm, setUserFormSubmit, getAdrressValues};
-export {addressFieldTemporary};
-export {CITY_CENTER};
-export {INPUT_NUMBERS};
+export {activateForm, switchOnForm, setUserFormSubmit, getAdrressValues, addressFieldTemporary, CITY_CENTER, INPUT_NUMBERS};
