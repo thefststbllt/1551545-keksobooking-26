@@ -1,5 +1,6 @@
 import './money-slider.js';
 import './reset-form.js';
+import './photo.js';
 import {getData} from './api.js';
 import {createSimilarList} from './map.js';
 import {activateForm} from './form.js';
