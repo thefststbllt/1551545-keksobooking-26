@@ -1,17 +1,6 @@
 import {sendData} from './api.js';
 import {getLuckSendMessage, getFailSendMessage} from './messages.js';
 
-const adForm = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filters');
-const formSlider = adForm.querySelector('.ad-form__slider');
-const roomNumber = adForm.querySelector('#room_number');
-const capacityNumber = adForm.querySelector('#capacity');
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element',
-  errorTextParent: 'ad-form__element',
-  errorTextClass: 'ad-form__error-text',
-});
-
 const GUESTS_LIMIT = {
   '1': [1],
   '2': [1, 2],
@@ -32,16 +21,27 @@ const CITY_CENTER = {
   lng: 139.75,
 };
 
-const getAdrressValues = () => {
-  const locValues = (Object.values(CITY_CENTER));
-  return locValues.map((element) => element.toFixed(5));
-};
-
-const addressFieldTemporary = adForm.querySelector('#address');
+const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
+const formSlider = adForm.querySelector('.ad-form__slider');
+const roomNumber = adForm.querySelector('#room_number');
+const capacityNumber = adForm.querySelector('#capacity');
 const typeAccommodation = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
 const timeinField = adForm.querySelector('#timein');
 const timeoutField = adForm.querySelector('#timeout');
+const addressFieldTemporary = adForm.querySelector('#address');
+
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextClass: 'ad-form__error-text',
+});
+
+const getAdrressValues = () => {
+  const locValues = (Object.values(CITY_CENTER));
+  return locValues.map((element) => element.toFixed(5));
+};
 addressFieldTemporary.value = `Широта: ${getAdrressValues().join(' Долгота: ')}`;
 priceField.min = INPUT_NUMBERS.FIVE_THOUSAND;
 
@@ -165,5 +165,7 @@ timeinField.addEventListener('change', () => {
 timeoutField.addEventListener('change', () => {
   timeinField.selectedIndex = timeoutField.selectedIndex;
 });
+
+
 
 export {activateForm, switchOnForm, setUserFormSubmit, getAdrressValues, addressFieldTemporary, CITY_CENTER, INPUT_NUMBERS};
