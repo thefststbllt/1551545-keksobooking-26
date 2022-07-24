@@ -12,11 +12,11 @@ const getLuckSendMessage = () => {
   const luckSendElement = luckSendMessage.cloneNode(true);
   mainBody.append(luckSendElement);
   mainBody.addEventListener('click', () => {
-    mainBody.removeChild(luckSendElement);
+    luckSendElement.remove();
   });
   mainBody.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
-      mainBody.removeChild(luckSendElement);
+      luckSendElement.remove();
     }
   });
 };
@@ -26,11 +26,11 @@ const getFailSendMessage = () => {
   const failSendElement = failSendMessage.cloneNode(true);
   mainBody.append(failSendElement);
   mainBody.addEventListener('click', () => {
-    mainBody.removeChild(failSendElement);
+    failSendElement.remove();
   });
   mainBody.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
-      mainBody.removeChild(failSendElement);
+      failSendElement.remove();
     }
   });
 };

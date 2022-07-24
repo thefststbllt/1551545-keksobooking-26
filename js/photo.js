@@ -1,4 +1,5 @@
 const FILE_TYPES = ['png', 'jpeg', 'jpg', 'gif'];
+const AVATAR_SUBSTRATE = 'img/muffin-grey.svg';
 
 const adAvatarPreview = document.querySelector('.ad-form-header__preview img');
 const adAvatarUpload = document.querySelector('.ad-form__field input[type=file]');
@@ -30,3 +31,13 @@ adHouseUpload.addEventListener('change', () => {
     innerPicture.width = 70;
   }
 });
+
+const photoReset = () => {
+  adAvatarPreview.src = AVATAR_SUBSTRATE;
+  const housePhotoList = Array.from(adHousePreview.children);
+  housePhotoList.forEach((photo) => {
+    photo.remove();
+  });
+};
+
+export {photoReset};

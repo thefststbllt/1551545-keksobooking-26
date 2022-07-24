@@ -4,7 +4,7 @@ const moneySlider = document.querySelector('.ad-form__slider');
 const moneyField = document.querySelector('#price');
 const livingType = document.querySelector('#type');
 
-moneyField.value = INPUT_NUMBERS.FIVE_THOUSAND;
+moneyField.value = INPUT_NUMBERS.ONE_THOUSAND;
 
 noUiSlider.create(moneySlider, {
   range: {
@@ -12,7 +12,7 @@ noUiSlider.create(moneySlider, {
     '50%': INPUT_NUMBERS.TEN_THOUSAND,
     max: INPUT_NUMBERS.HUNDRED_K,
   },
-  start: INPUT_NUMBERS.FIVE_THOUSAND,
+  start: INPUT_NUMBERS.ONE_THOUSAND,
   step: 1,
   connect: 'lower',
   format: {
@@ -39,7 +39,7 @@ livingType.addEventListener('change', () => {
       moneySlider.noUiSlider.set(0);
       break;
     case 'flat':
-      moneySlider.noUiSlider.set(INPUT_NUMBERS.FIVE_THOUSAND);
+      moneySlider.noUiSlider.set(INPUT_NUMBERS.ONE_THOUSAND);
       break;
     case 'hotel':
       moneySlider.noUiSlider.set(INPUT_NUMBERS.THREE_THOUSAND);
@@ -51,3 +51,9 @@ livingType.addEventListener('change', () => {
       moneySlider.noUiSlider.set(INPUT_NUMBERS.TEN_THOUSAND);
   }
 });
+
+const moneySliderReset = () => {
+  moneySlider.noUiSlider.reset();
+};
+
+export {moneySliderReset};

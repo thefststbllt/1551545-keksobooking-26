@@ -1,18 +1,26 @@
+import {resetDefaultMapMarkers} from './map-filter.js';
+import {moneySliderReset} from './money-slider.js';
+import {photoReset} from './photo.js';
 import {resetMap} from './map.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
-const filterForm = document.querySelector('.map__filters');
-const offerForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
 
 const resetForm = () => {
-  filterForm.reset();
-  offerForm.reset();
+  mapFilters.reset();
+  adForm.reset();
   resetMap();
+  moneySliderReset();
+  photoReset();
 };
 
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
+const resetAllOnDefault = (objects) => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+    resetDefaultMapMarkers(objects);
+  });
+};
 
-
+export {resetAllOnDefault, resetForm};

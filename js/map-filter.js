@@ -1,11 +1,5 @@
-import {createSimilarList, MARKERS_LIMIT, removeMarkers} from './map.js';
+import {createSimilarList, removeMarkers, MARKERS_LIMIT} from './map.js';
 import {debounce} from './util.js';
-
-const mapFilters = document.querySelector('.map__filters');
-const housingType = document.querySelector('#housing-type');
-const housingPrice = document.querySelector('#housing-price');
-const housingRooms = document.querySelector('#housing-rooms');
-const housingGuests = document.querySelector('#housing-guests');
 
 const ANY = 'any';
 const PRICE_RANGE = {
@@ -27,6 +21,12 @@ const PRICE_RANGE = {
   },
 };
 
+const mapFilters = document.querySelector('.map__filters');
+const housingType = document.querySelector('#housing-type');
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+
 //Getting suited type
 const getSimilarType = (offer) => housingType.value === ANY || housingType.value === offer.offer.type;
 
@@ -34,7 +34,6 @@ const getSimilarType = (offer) => housingType.value === ANY || housingType.value
 const getSimilarPrice = (offer) => {
   const minPrice = (PRICE_RANGE[housingPrice.value.toUpperCase()].min);
   const maxPrice = (PRICE_RANGE[housingPrice.value.toUpperCase()].max);
-
   return offer.offer.price >= minPrice && offer.offer.price < maxPrice;
 };
 
@@ -56,7 +55,13 @@ const getSimilarFeatures = (offer) => {
 };
 
 //Defining suited offer withing array
-const defineSimilarOffer = (objects) => objects.filter((offer) => (getSimilarType(offer) && getSimilarPrice(offer) && getSimilarRoomsAmount(offer) && getSimilarGuestsAmount(offer) && getSimilarFeatures(offer)));
+const defineSimilarOffer = (objects) => objects.filter((offer) => (
+  getSimilarType(offer) &&
+  getSimilarPrice(offer) &&
+  getSimilarRoomsAmount(offer) &&
+  getSimilarGuestsAmount(offer) &&
+  getSimilarFeatures(offer)
+));
 
 const resetMapMarkers = (objects) => {
 
@@ -75,4 +80,9 @@ const resetMapMarkers = (objects) => {
   });
 };
 
-export {resetMapMarkers};
+const resetDefaultMapMarkers = (objects) => {
+  removeMarkers();
+  createSimilarList(objects);
+};
+
+export {resetMapMarkers, resetDefaultMapMarkers};

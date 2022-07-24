@@ -1,8 +1,11 @@
-import {switchOnForm} from './form.js';
+import {getAddressValues, addressFieldTemporary} from './form.js';
+import {switchOnForm} from './form-activation.js';
 import {createCustomPopup} from './custom-popup.js';
-import {getAdrressValues} from './form.js';
-import {addressFieldTemporary} from './form.js';
-import {CITY_CENTER} from './form.js';
+
+const CITY_CENTER = {
+  lat: 35.675,
+  lng: 139.75,
+};
 
 const MARKERS_LIMIT = 10;
 const ZOOM_NUMBER = 13;
@@ -11,7 +14,7 @@ const map = L.map('map-canvas')
   .on('load', () => {
     switchOnForm();
   })
-  .setView(CITY_CENTER, ZOOM_NUMBER);
+  .setView({lat: 35.675, lng: 139.75,}, ZOOM_NUMBER);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -87,8 +90,8 @@ const resetMap = (x = CITY_CENTER.lat, y = CITY_CENTER.lng) => {
   }, ZOOM_NUMBER);
 
   mainPinMarker.setLatLng(CITY_CENTER);
-  addressFieldTemporary.value = getAdrressValues().join();
+  addressFieldTemporary.value = `Широта: ${getAddressValues().join(' Долгота: ')}`;
   map.closePopup();
 };
 
-export {createSimilarList, resetMap, removeMarkers, createMarker, mainPinMarker, MARKERS_LIMIT};
+export {createSimilarList, resetMap, removeMarkers, createMarker, mainPinMarker, MARKERS_LIMIT, CITY_CENTER};
